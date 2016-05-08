@@ -146,6 +146,67 @@ void getCurrentSpeeds()
     long timeDiff2 = previousTime2 - currentTime;
     previousTime1 = currentTime;
     previousTime2 = currentTime;
-    float currentSpeeds.leftWheel = (float)(counts/COUNTS_PER_TURN)/(float)(timeDiff1/60000) // in turns/min
-    float currentSpeeds.rightWheel = (float)(counts/COUNTS_PER_TURN)/(float)(timeDiff2/60000)
+    int currentSpeeds.leftWheel = (int)((float)(counts/COUNTS_PER_TURN)/(float)(timeDiff1/60000)) // in turns/min
+    int currentSpeeds.rightWheel = (int)((float)(counts/COUNTS_PER_TURN)/(float)(timeDiff2/60000))
+}
+
+
+void getPIDConfigDataFromRPi()
+{
+    int lastIndexOfComma = 0;
+
+    if (Serial.available() > 0)
+    {
+        String dataFromSerial = Serial.readStringUntil('\n');   // Get the full string from serial
+        dataFromSerial.trim();  // Supress all the white spaces (just in case)
+
+        String bufferStringOne = dataFromSerial.substring(lastIndexOfComma, dataFromSerial.indexOf(',', lastIndexOfComma));   // Take the first value separed from the others by a comma
+        lastIndexOfComma = dataFromSerial.indexOf(',', lastIndexOfComma) + 1; // Starting the next reading from the character after the comma
+        String bufferStringTwo = dataFromSerial.substring(lastIndexOfComma, dataFromSerial.indexOf(',', lastIndexOfComma));
+        lastIndexOfComma = dataFromSerial.indexOf(',', lastIndexOfComma) + 1;
+        String bufferStringThree = dataFromSerial.substring(lastIndexOfComma, dataFromSerial.indexOf(',', lastIndexOfComma));
+        lastIndexOfComma = dataFromSerial.indexOf(',', lastIndexOfComma) + 1;
+        String bufferStringFour = dataFromSerial.substring(lastIndexOfComma, dataFromSerial.indexOf(',', lastIndexOfComma));
+        lastIndexOfComma = dataFromSerial.indexOf(',', lastIndexOfComma) + 1;
+
+        setSpeed = bufferStringOne.toInt();
+        kp = bufferStringTwo.toFloat();
+        ki = bufferStringThree.toFloat();
+        kd = bufferStringFour.toFloat();
+    }
+}
+
+void sendPIDConfigDataToRPi()
+{
+
+}
+
+void getDataFromRPi()
+{
+    int lastIndexOfComma = 0;
+
+    if (Serial.available() > 0)
+    {
+        String dataFromSerial = Serial.readStringUntil('\n');   // Get the full string from serial
+        dataFromSerial.trim();  // Supress all the white spaces (just in case)
+
+        String bufferStringOne = dataFromSerial.substring(lastIndexOfComma, dataFromSerial.indexOf(',', lastIndexOfComma));   // Take the first value separed from the others by a comma
+        lastIndexOfComma = dataFromSerial.indexOf(',', lastIndexOfComma) + 1; // Starting the next reading from the character after the comma
+        String bufferStringTwo = dataFromSerial.substring(lastIndexOfComma, dataFromSerial.indexOf(',', lastIndexOfComma));
+        lastIndexOfComma = dataFromSerial.indexOf(',', lastIndexOfComma) + 1;
+        String bufferStringThree = dataFromSerial.substring(lastIndexOfComma, dataFromSerial.indexOf(',', lastIndexOfComma));
+        lastIndexOfComma = dataFromSerial.indexOf(',', lastIndexOfComma) + 1;
+        String bufferStringFour = dataFromSerial.substring(lastIndexOfComma, dataFromSerial.indexOf(',', lastIndexOfComma));
+        lastIndexOfComma = dataFromSerial.indexOf(',', lastIndexOfComma) + 1;
+
+        setSpeed = bufferStringOne.toInt();
+        angle = bufferStringTwo.toInt();
+        parking = bufferStringThree.equals("true");
+        inactive = bufferStringFour.equals("true");
+    }
+}
+
+void sendDataFromRPi()
+{
+
 }

@@ -11,7 +11,7 @@ void reculer(int angle, int vitesse)
 
 }
 
-int differentielVitesse(float vitesse1)
+int differentielVitesse(int vitesse1)
 {
 
 }

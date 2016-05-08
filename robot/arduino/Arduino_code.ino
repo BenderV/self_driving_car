@@ -5,6 +5,7 @@
 #include "main.h"
 
 
+int setSpeed = 0;
 float kp = KP;
 float ki = KI;
 float kd = KD;
@@ -17,6 +18,10 @@ state_t State = STOPPING_STATE;
 void setup()
 {
     Wire.begin();
+    while (!Serial)
+    {
+        // Wait for serial connection
+    }
     FlexiTimer2::set(DT, asservissement); // tous les "dt" ms le programme calcule la frequence et l'affiche
     FlexiTimer2::start();
 }
