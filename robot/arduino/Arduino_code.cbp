@@ -25,7 +25,7 @@
 					<Add option="-lardusim" />
 				</Linker>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/ardusim" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\ardusim" />
 				</Environment>
 			</Target>
 			<Target title="Simulator - Release">
@@ -48,7 +48,7 @@
 					<Add option="-lardusim" />
 				</Linker>
 				<Environment>
-					<Variable name="ARDUINO_DIR" value="$(APP_PATH)/ardusim" />
+					<Variable name="ARDUINO_DIR" value="$(APP_PATH)\ardusim" />
 				</Environment>
 			</Target>
 			<Target title="Arduino Uno">
@@ -529,7 +529,7 @@
 					<Add after='avr-size --mcu=$(MCU) --format=avr &quot;$(TARGET_OUTPUT_FILE)&quot;' />
 				</ExtraCommands>
 				<Environment>
-					<Variable name="BOARD" value="Arduino Mega 2560/ADK" />
+					<Variable name="BOARD" value="Arduino Mega 2560\ADK" />
 					<Variable name="BOARD_ID" value="mega2560" />
 					<Variable name="MCU" value="atmega2560" />
 					<Variable name="MCU_CLOCK" value="16" />
@@ -655,6 +655,13 @@
 			<Option compile="1" />
 			<Option link="1" />
 		</Unit>
+		<Unit filename="accesseurs.h" />
+		<Unit filename="accesseurs.ino" />
+		<Unit filename="constantes.h" />
+		<Unit filename="main.h" />
+		<Unit filename="mouvement.h" />
+		<Unit filename="mouvement.ino" />
+		<Unit filename="structures.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
