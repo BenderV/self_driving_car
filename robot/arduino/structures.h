@@ -13,8 +13,8 @@ typedef enum { STOPPING_STATE, MOVING_STATE, PARKING_STATE } state_t;
 
 typedef struct speed
 {
-    float leftWheel;
-    float rightWheel;
+    int leftWheel;
+    int rightWheel;
 } speed_t;
 
 
