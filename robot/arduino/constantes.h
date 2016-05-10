@@ -15,7 +15,7 @@
 #define DT              200   // Time step between each call to "asservissement" and all calculations included
 #define KP                  0.1
 #define KI                  0.01
-#define KD                  0
+#define KD                  0.0
 
 
 /*

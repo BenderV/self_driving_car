@@ -5,6 +5,7 @@
 #include "main.h"
 
 
+float setSpeed = 0;
 float kp = KP;
 float ki = KI;
 float kd = KD;
@@ -17,12 +18,19 @@ state_t State = STOPPING_STATE;
 void setup()
 {
     Wire.begin();
+    while (!Serial)
+    {
+        // Wait for serial connection
+    }
     FlexiTimer2::set(DT, asservissement); // tous les "dt" ms le programme calcule la frequence et l'affiche
     FlexiTimer2::start();
 }
 
 void loop()
 {
+    #ifdef PID_CONFIG_MODE
+    #
+    #endif // PID_CONFIG_MODE
     updateDataFromRPi();
 
     /****************FLAGS HANDLING*************/
@@ -39,7 +47,7 @@ void loop()
         dErr1 = (error2 - previousError2)/DT;
         errInt1 += error1/DT;
         errInt2 += error2/DT;
-        newSpeed1 = (int)(kp*error1 + ki*errInt1 + kd*dErr1);
+        newSpeed1 = (int)(kp*error1 + ki*errInt1 + kd*dErr1);   // value adapted to register, not real value of speed in turns/min
         newSpeed2 = (int)(kp*error1 + ki*errInt1 + kd*dErr1);
         previousError1 = error1;
         previousError2 = error2;
@@ -66,7 +74,7 @@ void loop()
             }
         }
 #ifdef PID_CONFIG_MODE
-        void sendSpeedToRPi(currentSpeeds);
+        void sendPIDConfigDataToRPi();
 #endif // PID_CONFIG_MODE
     }
 

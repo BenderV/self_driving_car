@@ -8,21 +8,22 @@ int getLightSRF(int adresse);
 int getSoftSRF(int adresse);
 
 /**Motors**/
-void initialisation
 double getVoltageRD01();
 long getEncoder1Counts();
 long getEncoder2Counts();
 void zeroEncoders();
+void getCurrentSpeeds();
 
-/**Raspberry Pi**/
-void updateDataFromRPi();
-#ifdef PID_CONFIG_MODE
-    void sendSpeedToRPi(speed_t currentSpeeds);
-#endif // PID_CONFIG_MODE
+/**Raspberry Pi Communication**/
+void getPIDConfigDataFromRPi();
+void sendPIDConfigDataToRPi();
+void getDataFromRPi();
+void sendDataFromRPi();
 
 /**General**/
 int isAreaClean();
-void getCurrentSpeeds();
+void intitializeSlaves();
+
 
 
 #endif

@@ -1,10 +1,9 @@
 #ifndef __MOUVEMENT__
 #define __MOUVEMENT__
 
-void avancer(int angle, float vitesse);
-void reculer(int angle, float vitesse);
-int differentielVitesse(float vitesse1);
-void asservissement(float vitesse);
-boolean distanceSecuriteRespectee(float vitesse);
+void avancer(int angle, int vitesse);
+int differentielVitesse(int vitesse1);
+void asservissement(int vitesse);
+boolean distanceSecuriteRespectee(int vitesse);
 
 #endif
