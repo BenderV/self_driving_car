@@ -21,8 +21,6 @@ def record_state(tag_name):
         return func()
     return record_state_decorator
 
-#import record
-
 def turn_left():
     motors('LEFT', 'BACKWARD', 100)
     motors('RIGHT', 'FORWARD', 100)
