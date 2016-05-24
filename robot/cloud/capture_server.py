@@ -5,8 +5,6 @@ import pickle
 import numpy as np
 import struct
 import csv
-### SAVING PARAMS
-
 
 HOST = 'localhost'
 PORT = 8089
