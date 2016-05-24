@@ -7,8 +7,8 @@ import struct ## new
 
 cap = cv2.VideoCapture(0)
 
-HOST='localhost'
-PORT=8089
+HOST = 'localhost'
+PORT = 8089
 
 clientsocket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 clientsocket.connect((HOST, PORT))

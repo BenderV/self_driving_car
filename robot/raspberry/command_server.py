@@ -6,8 +6,8 @@ import numpy as np
 import struct
 
 
-HOST='localhost'
-PORT=9089
+HOST = 'localhost'
+PORT = 9089
 
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 print('Socket created')

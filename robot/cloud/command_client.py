@@ -3,8 +3,8 @@
 import socket
 import curses
 
-HOST='localhost'
-PORT=9089
+HOST = 'localhost'
+PORT = 9089
 
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 s.connect((HOST,PORT))
