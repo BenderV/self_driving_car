@@ -9,7 +9,7 @@
 
 
   /***CONSTANTS***/
-#define VITESSE_MAX         180
+#define MAX_SPEED         180
 #define DELAY_LOOP          50
 <<<<<<< HEAD
 #define COUNTS_PER_TURN     360   // Counts per turn defined by the encoders

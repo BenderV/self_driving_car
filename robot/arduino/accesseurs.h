@@ -11,7 +11,6 @@ int getSoftSRF(int adresse);
 double getVoltageRD01();
 long getEncoder1Counts();
 long getEncoder2Counts();
-<<<<<<< HEAD
 void zeroEncoders();
 void getCurrentSpeeds();
 
@@ -19,26 +18,13 @@ void getCurrentSpeeds();
 void getPIDConfigDataFromRPi();
 void sendPIDConfigDataToRPi();
 void getDataFromRPi();
-void sendDataFromRPi();
+void sendDataToRPi();
 
 /**General**/
 int isAreaClean();
 void intitializeSlaves();
-=======
 void zeroEncoders();
 void getCurrentSpeeds();
-
-/**Raspberry Pi Communication**/
-void getPIDConfigDataFromRPi();
-void sendPIDConfigDataToRPi();
-void getDataFromRPi();
-void sendDataFromRPi();
-
-/**General**/
-int isAreaClean();
-void intitializeSlaves();
->>>>>>> ae5b5afd93b7b3d030e80e9e672bd130ac63944d
-
 
 
 #endif
