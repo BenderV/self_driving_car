@@ -45,7 +45,7 @@ if PID_CONFIG_MODE == False:
         us3 = float(listOfNumbers[5])
         us4 = float(listOfNumbers[6])
         us5 = float(listOfNumbers[7])
-        return realSpeedLeft, realSpeedRight
+        return angle, security, usdChanged, usd1, usd2, usd3, usd4, usd5
 
 
 
