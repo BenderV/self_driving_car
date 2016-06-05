@@ -11,21 +11,11 @@
   /***CONSTANTS***/
 #define MAX_SPEED         180
 #define DELAY_LOOP          50
-<<<<<<< HEAD
 #define COUNTS_PER_TURN     360   // Counts per turn defined by the encoders
-#define DT              200   // Time step between each call to "asservissement" and all calculations included
-#define KP                  0.1
-#define KI                  0.01
-#define KD                  0.0
-
-=======
-#define COUNTS_PER_TURN     360   // Counts per turn defined by the encoders
-#define DT              200   // Time step between each call to "asservissement" and all calculations included
+#define DT              200   // Time step between each call to "speedRegulation" and all calculations included
 #define KP                  0.1
 #define KI                  0.01
 #define KD                  0
-
->>>>>>> ae5b5afd93b7b3d030e80e9e672bd130ac63944d
 
 /*
 I2C device found at address 0x00 !

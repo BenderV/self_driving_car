@@ -203,16 +203,26 @@ void getDataFromRPi()
 
         setSpeed = bufferStringOne.toFloat();
         angle = bufferStringTwo.toInt();
-        parking = bufferStringThree.equals("true");
-        inactive = bufferStringFour.equals("true");
+        security = bufferStringThree.equals("true");
+        powerDown = bufferStringFour.equals("true");
     }
 }
 
 void sendDataToRPi()
 {
-    Serial.print(angle);
+    Serial.print(int(security));
     Serial.print(',');
-    Serial.print(parking);
+    Serial.println(int(powerDown));
     Serial.print(',');
-    Serial.println(inactive);
+    Serial.println(int(usdChanged));
+    Serial.print(',');
+    Serial.println(usd1);
+    Serial.print(',');
+    Serial.println(usd2);
+    Serial.print(',');
+    Serial.println(usd3);
+    Serial.print(',');
+    Serial.println(usd4);
+    Serial.print(',');
+    Serial.println(usd5);
 }

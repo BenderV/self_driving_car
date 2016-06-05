@@ -19,10 +19,10 @@ int differentielVitesse(int vitesse1)
 /**
     Function called when FlexiTimer2 is making an interrupt.
     /!\ Since it's an ISR, avoid doing too much things here.
-        That's why there is the flag "flagAsservissement", and the rest is done in loop()
+        That's why there is the flag "flagSpeedRegulation", and the rest is done in loop()
     */
-void asservissement()
+void speedRegulation()
 {
-    flagAsservissement = true;
+    flagSpeedRegulation = true;
     getCurrentSpeeds();
 }

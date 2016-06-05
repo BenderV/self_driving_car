@@ -2,12 +2,7 @@ import serial
 
 PID_CONFIG_MODE = True
 
-setSpeed = 0
-kp = 0.1
-ki = 0.1
-kd = 0
-
-
+# "/dev/ttyAMA0" to change with our serial port communicating with the Arduino
 port = serial.Serial("/dev/ttyAMA0", baudrate=115200, timeout=3.0)
 
 
@@ -28,24 +23,30 @@ if PID_CONFIG_MODE == True:
 
 if PID_CONFIG_MODE == False:
     def sendData(speed, angle, security, powerDown):
-        stringToSend = str(speed) + ',' + str(angle) + ',' + str(security) + ',' + str(powerDown) + '\n'
+        stringToSend = str(speed) + ',' + str(angle) + ',' + str(int(security)) + ',' + str(int(powerDown)) + '\n'
         stringToSend.encode('ascii')
         port.write(stringToSend.encode('ascii'))
 
-    def receiveData(angle, security, usdChanged, usd1, usd2, usd3, usd4, usd5):     """" usd# = ultrasound device nbr # distance in centimeters """
+    def receiveData():     # usd# = ultrasound device nbr # distance in centimeters
         while lastCharacter != ord('\n'):
             lastCaracter = port.read();
             data += lastCharacter;
         listOfNumbers = data.split(',')
-        angle = float(listOfNumbers[0])
-        security = float(listOfNumbers[1])
-        usdChanged = float(listOfNumbers[2])
+        if int(listOfNumbers[0]) == True:
+            security = True
+        else:
+            security = False
+        if int(listOfNumbers[1]) == True:
+            powerDown = True
+        else:
+            powerDown = False
+        if int(listOfNumbers[2]) == True:
+            usdChanged = True
+        else:
+            usdChanged = False
         us1 = float(listOfNumbers[3])
         us2 = float(listOfNumbers[4])
         us3 = float(listOfNumbers[5])
         us4 = float(listOfNumbers[6])
         us5 = float(listOfNumbers[7])
-        return angle, security, usdChanged, usd1, usd2, usd3, usd4, usd5
-
-
-
+        return security, usdChanged, usd1, usd2, usd3, usd4, usd5

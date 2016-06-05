@@ -3,7 +3,7 @@
 
 void avancer(int angle, int vitesse);
 int differentielVitesse(int vitesse1);
-void asservissement(int vitesse);
+void speedRegulation(int vitesse);
 boolean distanceSecuriteRespectee(int vitesse);
 
 #endif

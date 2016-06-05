@@ -11,10 +11,10 @@ float ki = KI;
 float kd = KD;
 float PrevKi = 0;
 volatile speed_t currentSpeeds;
-boolean flagAsservissement = false;
+boolean flagSpeedRegulation = false;
 boolean angleChanged = false;
-boolean parkingModeChanged = false;
-boolean inactiveModeChanged = false;
+boolean securityModeChanged = false;
+boolean powerDownModeChanged = false;
 mode_t Mode = INACTIVE_MODE;
 state_t State = STOPPING_STATE;
 
@@ -26,7 +26,7 @@ void setup()
     {
         // Wait for serial connection
     }
-    FlexiTimer2::set(DT, asservissement); // tous les "dt" ms le programme calcule la frequence et l'affiche
+    FlexiTimer2::set(DT, speedRegulation); // tous les "dt" ms le programme calcule la frequence et l'affiche
     FlexiTimer2::start();
 }
 
@@ -36,7 +36,7 @@ void loop()
     /**
     If not in PID configuration mode and if one arduino parameter or more have been changed, the parameters are updated to the RPi
     */
-    if (angleChanged || parkingModeChanged || inactiveModeChanged)
+    if (angleChanged || securityModeChanged || powerDownModeChanged)
     {
         sendDataToRPi();
     }
@@ -54,10 +54,10 @@ void loop()
     /****************FLAGS HANDLING*************/
 
 
-    /** Asservissement
-    For feedback regulation (asservissement) of the speed, after the ISR has been called
+    /** SpeedRegulation
+    For feedback regulation (speedRegulation) of the speed, after the ISR has been called
     */
-    if (flagAsservissement)
+    if (flagSpeedRegulation)
     {
         error1 = SetSpeed1 - currentSpeeds.leftWheel;
         error2 = SetSpeed2 - currentSpeeds.rightWheel;
