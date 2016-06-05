@@ -18,14 +18,14 @@ typedef struct speed
 } speed_t;
 
 
-#ifdef PID_CONFIG_MODE
-    typedef struct donneesPID
-    {
-        float kp;
-        float ki;
-        float kd;
-    } PID_t;
-#endif // PID_CONFIG_MODE
+//#ifdef PID_CONFIG_MODE
+//    typedef struct donneesPID
+//    {
+//        float kp;
+//        float ki;
+//        float kd;
+//    } PID_t;
+//#endif // PID_CONFIG_MODE
 
 
 #endif

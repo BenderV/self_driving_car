@@ -118,6 +118,19 @@ void zeroEncoders()
     Wire.endTransmission();
 }
 
+void setMotorsSpeed()
+{
+    Wire.beginTransmission(RD01_ADDR);
+    Wire.write((byte)RD01_RIGHT_WHEEL_REG);
+    Wire.write((byte)newSpeedR);
+    Wire.endTransmission();
+
+    Wire.beginTransmission(RD01_ADDR);
+    Wire.write((byte)RD01_LEFT_WHEEL_REG);
+    Wire.write((byte)newSpeedL);
+    Wire.endTransmission();
+}
+
 int isAreaClean()
 {
     if (getRangeSRF(SRF08_4_ADDR) < SRF08_DISTANCE

@@ -13,6 +13,7 @@ long getEncoder1Counts();
 long getEncoder2Counts();
 void zeroEncoders();
 void getCurrentSpeeds();
+void setMotorsSpeed();
 
 /**Raspberry Pi Communication**/
 void getPIDConfigDataFromRPi();

@@ -3,19 +3,22 @@
 
 
 #define PID_CONFIG_MODE 1   // comment to supress the possibility of modifying the PID values
+#define MD25_REGULATION_MODE 1  // comment to disable automatic regulation of the speed by MD25 card
 
 
   /***I/O***/
 
 
   /***CONSTANTS***/
-#define MAX_SPEED         180
+#define MAX_SPEED           127 // Maximum speed on a scale from 0 to -128 or 0 to 127
+#define MAX_SPEED_RPM       200 // Maximum supposed speed (from motors doc) in rpm
 #define DELAY_LOOP          50
-#define COUNTS_PER_TURN     360   // Counts per turn defined by the encoders
-#define DT              200   // Time step between each call to "speedRegulation" and all calculations included
+#define COUNTS_PER_TURN     360.0   // Counts per turn defined by the encoders
+#define DT                  200.0   // Time step between each call to "speedRegulation" and all calculations included
 #define KP                  0.1
 #define KI                  0.01
 #define KD                  0
+#define SRF08_DISTANCE      10 // value of distance for which an area is "clean"
 
 /*
 I2C device found at address 0x00 !
@@ -43,8 +46,8 @@ cable rose = +5V
 #define RD01_MOTOR1_CURRENT_REG 0x0B
 #define RD01_MOTOR2_CURRENT_REG 0x0C
 // Read & Write registers
-#define RD01_ROUE_DROITE_REG 0x00
-#define RD01_ROUE_GAUCHE_REG 0x01
+#define RD01_RIGHT_WHEEL_REG 0x00
+#define RD01_LEFT_WHEEL_REG 0x01
 #define RD01_ACC_RATE_REG 0E
 #define RD01_MODE_REG 0F
 #define RD01_CMD_REG 10
@@ -110,8 +113,6 @@ cable rose = +5V
 // Possible values for CMD register
 #define SRF08_CMD_CM 0x51 // Ask for a range with values returned in centimeters
 #define SRF08_CMD_MS 0x52 // Ask for a range with values returned in milliseconds
-
-#define SRF08_DISTANCE 10 // value of distance for which an area is "clean"
 
 
 //  /***LIGHTING***/
