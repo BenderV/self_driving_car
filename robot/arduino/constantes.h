@@ -48,9 +48,9 @@ cable rose = +5V
 // Read & Write registers
 #define RD01_RIGHT_WHEEL_REG 0x00
 #define RD01_LEFT_WHEEL_REG 0x01
-#define RD01_ACC_RATE_REG 0E
-#define RD01_MODE_REG 0F
-#define RD01_CMD_REG 10
+#define RD01_ACC_RATE_REG 0x0E
+#define RD01_MODE_REG 0x0F
+#define RD01_CMD_REG 0x10
 // Possible values of the register MODE
 #define RD01_MODE_0 0x00  // 0 (full reverse) 128 (stop) 255 (full forward) for both motors independently [DEFAULT]
 #define RD01_MODE_1 0x01  // -128 (full reverse) 0 (stop) 127 (full forward) for both motors independently

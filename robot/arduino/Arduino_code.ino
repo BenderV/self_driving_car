@@ -8,6 +8,8 @@
 float setSpeed = 0; // Set speed for "leading" wheel, the other wheel is regulated through value "angle"
 float setSpeedLeft = 0;
 float setSpeedRight = 0;
+float realSpeedL = 0;
+float realSpeedR = 0;
 float kp = KP;
 float ki = KI;
 float kd = KD;
@@ -15,11 +17,19 @@ float PrevKi = 0;
 int angle = 0;
 int newSpeedL = 0;
 int newSpeedR = 0;
-volatile speed_t currentSpeeds;
+int usd1 = 0;
+int usd2 = 0;
+int usd3 = 0;
+int usd4 = 0;
+int usd5 = 0;
+//volatile speed_t currentSpeeds;
 boolean flagSpeedRegulation = false;
 boolean angleChanged = false;
 boolean securityModeChanged = false;
 boolean powerDownModeChanged = false;
+boolean usdChanged = false;
+boolean security = true;
+boolean powerDown = true;
 mode_t Mode = INACTIVE_MODE;
 state_t State = STOPPING_STATE;
 
@@ -99,8 +109,8 @@ void loop()
         If not using MD25 regulation mode, regulation is needed
         */
         #ifndef MD25_REGULATION_MODE
-        errorL = setSpeedLeft - currentSpeeds.leftWheel;
-        errorR = setSpeedRight - currentSpeeds.rightWheel;
+        errorL = setSpeedLeft - realSpeedL;
+        errorR = setSpeedRight - realSpeedR;
         dErrL = (errorL - previousErrorL)/DT;
         dErrR = (errorR - previousErrorR)/DT;
         errIntL += errorL/DT;
