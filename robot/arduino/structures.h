@@ -11,21 +11,21 @@ typedef enum { STOPPING_STATE, MOVING_STATE, PARKING_STATE } state_t;
 
   /***STRUCTURES DEFINITION***/
 
-typedef struct speed
-{
-    int leftWheel;
-    int rightWheel;
-} speed_t;
+//typedef struct speed
+//{
+//    int leftWheel;
+//    int rightWheel;
+//} speed_t;
 
 
-#ifdef PID_CONFIG_MODE
-    typedef struct donneesPID
-    {
-        float kp;
-        float ki;
-        float kd;
-    } PID_t;
-#endif // PID_CONFIG_MODE
+//#ifdef PID_CONFIG_MODE
+//    typedef struct donneesPID
+//    {
+//        float kp;
+//        float ki;
+//        float kd;
+//    } PID_t;
+//#endif // PID_CONFIG_MODE
 
 
 #endif
