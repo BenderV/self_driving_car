@@ -13,12 +13,14 @@
 #define MAX_SPEED           127 // Maximum speed on a scale from 0 to -128 or 0 to 127
 #define MAX_SPEED_RPM       200 // Maximum supposed speed (from motors doc) in rpm
 #define DELAY_LOOP          50
+#define REACTION_DELAY      0.1 // max time in sec between the moment of ranging by ultrasonic device and security checking
 #define COUNTS_PER_TURN     360.0   // Counts per turn defined by the encoders
 #define DT                  200.0   // Time step between each call to "speedRegulation" and all calculations included
 #define KP                  0.1
 #define KI                  0.01
 #define KD                  0
-#define SRF08_DISTANCE      10 // value of distance for which an area is "clean"
+#define SRF08_DISTANCE      10  // value of distance for which an area is "clean"
+#define K_SECURITY          10  // more or less depending of motor power, wheel size and mass of the robot
 
 /*
 I2C device found at address 0x00 !

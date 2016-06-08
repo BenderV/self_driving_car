@@ -3,9 +3,9 @@
 
 
 /**SRF08**/
-int getRangeSRF(int adresse);
-int getLightSRF(int adresse);
-int getSoftSRF(int adresse);
+usd_t getRangeSRF(int address, usd_t usd);
+int getLightSRF(int address);
+int getSoftSRF(int address);
 
 /**Motors**/
 double getVoltageRD01();
@@ -26,6 +26,7 @@ int isAreaClean();
 void intitializeSlaves();
 void zeroEncoders();
 void getCurrentSpeeds();
+void testSecurityDistance();
 
 
 #endif

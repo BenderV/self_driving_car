@@ -11,6 +11,14 @@ typedef enum { STOPPING_STATE, MOVING_STATE, PARKING_STATE } state_t;
 
   /***STRUCTURES DEFINITION***/
 
+typedef struct UltraSoundTiming
+{
+    int address;
+    int range;
+    boolean usdRangeInitiated;
+    unsigned int lastTime;
+} usd_t;
+
 //typedef struct speed
 //{
 //    int leftWheel;

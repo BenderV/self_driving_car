@@ -7,32 +7,37 @@
   @param adresse    SRF08 module address
   @return range     return the distance in centimeters
 */
-//int getRangeSRF(int adresse)
-//{
-//    int range = 0;
+usd_t getRangeSRF(int address, usd_t usd)
+{
+    if (usd.usdRangeInitiated == false)
+    {
+        Wire.beginTransmission(usd.address);
+        Wire.write((byte)SRF08_CMD_REG);
+        Wire.write(SRF08_CMD_CM); // to get centimeters
+        Wire.endTransmission();
+
+        usd.lastTime = millis();
+        usd.usdRangeInitiated = true;
+    }
+    else
+    {
+        Wire.beginTransmission(usd.address);
+        Wire.write((byte)SRF08_ECHO1_HSB_REG);
+        Wire.endTransmission();
+
+        Wire.requestFrom(usd.address, 2);               // Request 2 bytes from SRF module
+        while(Wire.available() < 2);                    // Wait for data to arrive
+        byte highByte = Wire.read();                 // Get high byte
+        byte lowByte = Wire.read();                 // Get low byte
+
+        usd.range = (highByte << 8) + lowByte;              // Put them together
+        usd.usdRangeInitiated = false;
+    }
+
+    return(usd);                                  // Returns Range
+}
 //
-//    Wire.beginTransmission(adresse);
-//    Wire.write((byte)SRF08_CMD_REG);
-//    Wire.write(0x51); //Pour avoir des cm
-//    Wire.endTransmission();
-//
-//    delay(70); // On attend que les capteurs prennent des valeurs (tres important)
-//
-//    Wire.beginTransmission(adresse);
-//    Wire.write(SRF08_RANGE_REG);
-//    Wire.endTransmission();
-//
-//    Wire.requestFrom(adresse, 2);               // Request 2 bytes from SRF module
-//    while(Wire.available() < 2);                    // Wait for data to arrive
-//    byte highByte = Wire.read();                 // Get high byte
-//    byte lowByte = Wire.read();                 // Get low byte
-//
-//    range = (highByte << 8) + lowByte;              // Put them together
-//
-//    return(range);                                  // Returns Range
-//}
-//
-//int getLightSRF(int adresse)                                    // Function to get light reading
+//int getLightSRF(int adress)                                    // Function to get light reading
 //{
 //    Wire.beginTransmission(adresse);
 //    Wire.write(SRF08_LIGHT_REG);                           // Call register to get light reading
@@ -46,7 +51,7 @@
 //
 //}
 //
-//int getSoftSRF(int adresse)                                     // Function to get software revision
+//int getSoftSRF(adresse)                                     // Function to get software revision
 //{
 //
 //    Wire.beginTransmission(adresse);             // Begin communication with the SRF module
@@ -223,19 +228,43 @@ void getDataFromRPi()
 
 void sendDataToRPi()
 {
-    Serial.print(int(security));
+    Serial.print(int(safe));
     Serial.print(',');
     Serial.println(int(powerDown));
     Serial.print(',');
     Serial.println(int(usdChanged));
     Serial.print(',');
-    Serial.println(usd1);
+    Serial.println(usdDistance1);
     Serial.print(',');
-    Serial.println(usd2);
+    Serial.println(usdDistance2);
     Serial.print(',');
-    Serial.println(usd3);
+    Serial.println(usdDistance3);
     Serial.print(',');
-    Serial.println(usd4);
+    Serial.println(usdDistance4);
     Serial.print(',');
-    Serial.println(usd5);
+    Serial.println(usdDistance5);
 }
+
+//void testSecurityDistance()
+//{
+//    float linearSpeed = abs(setSpeed)*5/60 // speed of wheel converted in linear speed in cm/s (wheel diameter = 10 cm)
+//
+//    float securityDistance = linearSpeed*REACTION_DELAY + K_SECURITY*pow(linearSpeed,3);
+//
+//    if (setSpeed >=0)
+//    {
+//        if (usdDistance1 <= securityDistance || usdDistance2 <= securityDistance)
+//        {
+//            safe = false;
+//            safetyChanged = true;
+//        }
+//    }
+//    if (setSpeed < 0)
+//    {
+//        if (usdDistance3 <= securityDistance || usdDistance4 <= securityDistance || usdDistance5 <= securityDistance)
+//        {
+//            safe = false;
+//            safetyChanged = true;
+//        }
+//    }
+//}
