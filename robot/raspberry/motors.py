@@ -28,9 +28,10 @@ def save_state():
 
 def record_state(tag_name):
     def record_state_decorator(func):
-        print(save_state())
-        @wraps(func)
-        return func()
+        #print(save_state())
+        #@wraps(func)
+        #return func()
+	pass
     return record_state_decorator
 
 def turn_left():
@@ -53,7 +54,7 @@ def stop():
     motors('LEFT', 'STOP')
     motors('RIGHT', 'STOP')
 
-@record_state # commands, input and output?
+# @record_state # commands, input and output?
 def motors(side, direction, speed=0):
     """Control the motors. The speed is however fixed for now"""
     if side == 'LEFT':
@@ -63,9 +64,9 @@ def motors(side, direction, speed=0):
 
     # set direction
     if direction == 'FORWARD':
-        bus.write_byte_data(I2C_MOTOR, register_address, speed)
-    elif direction == 'BACKWARD':
         bus.write_byte_data(I2C_MOTOR, register_address, -speed)
+    elif direction == 'BACKWARD':
+        bus.write_byte_data(I2C_MOTOR, register_address, speed)
     else: # RELEASE
         bus.write_byte_data(I2C_MOTOR, register_address, 0)
 
@@ -107,7 +108,7 @@ def drive_ai():
     pass
 
 def setup(mode_motors=1): # 1 (or 3
-    bus.write_byte_data(DEVICE_ADDR, 0x00, 0x01)
+    bus.write_byte_data(I2C_MOTOR, 0x00, 0x01)
     pass
 
 def exit():
