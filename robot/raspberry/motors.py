@@ -6,11 +6,23 @@ import picamera
 import io
 import datetime, time
 from functools import wraps
+import smbus
+
+DEVICE_BUS = 1
+bus = smbus.SMBus(DEVICE_BUS)
+
+I2C_MOTOR   = 0x58
+I2C_SONAR_0 = 0x70
+I2C_SONAR_2 = 0x71
+I2C_SONAR_4 = 0x72
+I2C_SONAR_6 = 0x73
+I2C_SONAR_8 = 0x74
+
 
 def save_state():
     state = {}
-    pins = [11, 13, 15, 16]
-    state['pins'] = [GPIO.input(i) for i in pins]
+    # pins = [11, 13, 15, 16]
+    # state['pins'] = [GPIO.input(i) for i in pins]
     state['time'] = time.time()
     return state
 
@@ -45,22 +57,17 @@ def stop():
 def motors(side, direction, speed=0):
     """Control the motors. The speed is however fixed for now"""
     if side == 'LEFT':
-        pin_a = 11
-        pin_b = 13
+        register_address = 0
     else: # RIGHT
-        pin_a = 16
-        pin_b = 15
+        register_address = 1
 
     # set direction
     if direction == 'FORWARD':
-        GPIO.output(pin_a, GPIO.HIGH)
-        GPIO.output(pin_b, GPIO.LOW)
+        bus.write_byte_data(I2C_MOTOR, register_address, speed)
     elif direction == 'BACKWARD':
-        GPIO.output(pin_a, GPIO.LOW)
-        GPIO.output(pin_b, GPIO.HIGH)
+        bus.write_byte_data(I2C_MOTOR, register_address, -speed)
     else: # RELEASE
-        GPIO.output(pin_a, GPIO.LOW)
-        GPIO.output(pin_b, GPIO.LOW) 
+        bus.write_byte_data(I2C_MOTOR, register_address, 0)
 
 
 def drive_manual():
@@ -99,15 +106,12 @@ def drive_manual():
 def drive_ai():
     pass
 
-def setup():
-    GPIO.setmode(GPIO.BOARD) ## Use board pin numbering
-    GPIO.setup(11, GPIO.OUT)
-    GPIO.setup(13, GPIO.OUT)
-    GPIO.setup(15, GPIO.OUT)
-    GPIO.setup(16, GPIO.OUT)
+def setup(mode_motors=1): # 1 (or 3
+    bus.write_byte_data(DEVICE_ADDR, 0x00, 0x01)
+    pass
 
 def exit():
-    GPIO.cleanup()
+    pass 
 
 def main():
     setup()
