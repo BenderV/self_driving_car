@@ -4,6 +4,7 @@ import cv2
 import pickle
 import numpy as np
 import struct
+import motors
 
 
 HOST = 'localhost'
@@ -23,10 +24,23 @@ print('Connected with ' + addr[0] + ':' + str(addr[1]))
 
 data = ""
 
+motors.setup()
+
 while True:
     data = conn.recv(1024)
     if not data:
         break
+
+    if data == 'left':
+        motors.turn_left()
+    elif data == 'right':
+        motors.turn_right()
+    elif event == 'up':
+        motors.move_forward()
+    elif event == 'down':
+        motors.move_backward()
+    elif event == 'stop':
+        motors.stop()
 
     reply = 'got...' + data
     print(data)
