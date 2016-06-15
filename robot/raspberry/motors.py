@@ -63,13 +63,15 @@ def motors(side, direction, speed=0):
         register_address = 1
 
     # set direction
-    if direction == 'FORWARD':
-        bus.write_byte_data(I2C_MOTOR, register_address, -speed)
-    elif direction == 'BACKWARD':
-        bus.write_byte_data(I2C_MOTOR, register_address, speed)
-    else: # RELEASE
-        bus.write_byte_data(I2C_MOTOR, register_address, 0)
-
+    try:
+      if direction == 'FORWARD':
+          bus.write_byte_data(I2C_MOTOR, register_address, speed)
+      elif direction == 'BACKWARD':
+          bus.write_byte_data(I2C_MOTOR, register_address, -speed)
+      else: # RELEASE
+          bus.write_byte_data(I2C_MOTOR, register_address, 0)
+    except IOError as e:
+        print(e)
 
 def drive_manual():
     """Manually drive the car"""
@@ -107,8 +109,9 @@ def drive_manual():
 def drive_ai():
     pass
 
-def setup(mode_motors=1): # 1 (or 3
-    bus.write_byte_data(I2C_MOTOR, 0x00, 0x01)
+def setup(mode_motors=1): # 1 or 3
+    bus.write_byte_data(I2C_MOTOR, 14, 10) # Acceleration rate
+    bus.write_byte_data(I2C_MOTOR, 15, 1) # mode
     pass
 
 def exit():
