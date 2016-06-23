@@ -108,7 +108,6 @@ class VisionStreamServer(object):
             packed_msg_size = self.data[:self.payload_size]
             self.data = self.data[self.payload_size:]
             msg_size = struct.unpack('<L', packed_msg_size)[0]
-
             while len(self.data) < msg_size:
                 self.data += self.connection.recv(4096)
             frame_data = self.data[:msg_size]
@@ -160,16 +159,27 @@ def main():
             framerate = 0
 
         detected = detection.detections(frame)
-        frame = detection.draw_pattern(frame, detected['stop'],  style='roi',  color=(0, 0, 255))
-        frame = detection.draw_pattern(frame, detected['lines'], style='line', color=(255, 0, 0))
-        mask = preprocessing.track_line(frame)
+        frame = detection.draw_pattern(frame, detected.get('stop', []),  style='roi',  color=(0, 0, 255))
+        frame = detection.draw_pattern(frame, detected.get('stop', []), style='line', color=(255, 0, 0))
+        mask = preprocessing.get_mask_color(frame, color='yellow')
+        cx, cy, surface_size = preprocessing.get_mask_info(mask)
+  
+        mask_color = cv2.cvtColor(mask, cv2.cv.CV_GRAY2RGB)
+        dst = cv2.add(frame, mask_color)
         
-        mask = cv2.cvtColor(mask, cv2.cv.CV_GRAY2RGB)
-        dst = cv2.add(frame,mask)
+        cv2.circle(dst, (cx,cy), 10, (0, 0, 255), 3)
 
         cv2.putText(dst,
                     str(framerate)[:3] + 'FPS',
                     (dst.shape[1]-100,dst.shape[0]-30),
+                    cv2.FONT_HERSHEY_PLAIN,
+                    1,
+                    cv2.cv.CV_RGB(255,255,0),
+                    thickness=1)
+
+        cv2.putText(dst,
+                    'SIZE: ' + str(surface_size),
+                    (100,dst.shape[0]-30),
                     cv2.FONT_HERSHEY_PLAIN,
                     1,
                     cv2.cv.CV_RGB(255,255,0),
