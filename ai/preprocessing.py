@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import glob
 import sys
+import detection
 
 def get_mask_color(img, color='red'):
     # img = cv2.medianBlur(img, 5)
@@ -27,23 +28,41 @@ def get_mask_color(img, color='red'):
 
     return mask
 
+def get_size_mask(image, y_start, y_stop):
+    return image[int(image.shape[0]*y_start):int(image.shape[0]*y_stop), :] # roi
+
+def get_mask_info(mask):
+    try:
+        mask = mask.copy()
+        # contours, hierarchy = cv2.findContours(mask, 1, 2)
+        M = cv2.moments(mask)
+        cx = int(M['m10']/M['m00'])
+        cy = int(M['m01']/M['m00'])
+        surface_size = M['m00']
+    except Exception as e:
+        print(e)
+        cx, cy = 0, 0
+        surface_size = 0
+    return cx, cy, surface_size
+
 if __name__ == '__main__':
     images_path = glob.glob(sys.argv[1])
     for image_path in images_path:
         image = cv2.imread(image_path)
         image = cv2.resize(image, (960, 720))
+
+        # roi = mask[int(mask.shape[1]/2):mask.shape[0], 0:mask.shape[1]] # roi
+        #lines = detection.lines_detection(image)
+        # detection.draw_pattern(image, lines, style='line', color=(0, 0, 255 ))
+
         mask = get_mask_color(image, color='yellow')
         mask_color = cv2.cvtColor(mask, cv2.cv.CV_GRAY2RGB)
 
-
-        img = mask[:]
-        roi = img[int(img.shape[1]/2):img.shape[0], 0:img.shape[1]] # roi
-        contours, hierarchy = cv2.findContours(roi, 1, 2)
-        M = cv2.moments(contours[0])
-        cx = int(M['m10']/M['m00'])
-        cy = int(img.shape[1]/2) + int(M['m01']/M['m00'])
-        cv2.circle(mask_color, (cx,cy), 10, (0, 0, 255), 3)
-        
+        a = np.linspace(0.5, 1, 11)
+        for i in range(10):
+          roi = get_size_mask(mask, a[i], a[i+1])
+          cx, cy, surface_size = get_mask_info(roi)
+          cv2.circle(mask_color, (cx, int(image.shape[0]*a[i] + cy)), 10, (0, 0, 255), 3)
 
         img = cv2.add(image, mask_color)
         cv2.imshow('img', img)

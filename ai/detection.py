@@ -7,7 +7,7 @@ local_path = os.path.dirname(os.path.realpath(__file__))
 stop_sign_cascade = cv2.CascadeClassifier(os.path.join(local_path, 'resources/haar/stop_sign.xml'))
 traffic_lights_cascade = cv2.CascadeClassifier(os.path.join(local_path, 'resources/haar/traffic_light.xml'))
 
-def stop_sign_detection(img_gray, scaleFactor=1.10, minNeighbors=3, minSize=(50, 50)):
+def stop_sign_detection(img_gray, scaleFactor=1.20, minNeighbors=3, minSize=(90, 90)):
     stop_signs = stop_sign_cascade.detectMultiScale(
         img_gray, 
         scaleFactor=scaleFactor, 
