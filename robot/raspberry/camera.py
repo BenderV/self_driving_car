@@ -12,9 +12,6 @@ class PiVideoStream:
         self.camera.framerate = framerate
         self.camera.vflip = True
         self.camera.hflip = True
-        self.rawCapture = PiRGBArray(self.camera, size=resolution)
-        self.stream = self.camera.capture_continuous(self.rawCapture,
-          format="bgr", use_video_port=True)
      
         # initialize the frame and the variable used to indicate
         # if the thread should be stopped
@@ -23,6 +20,10 @@ class PiVideoStream:
 
     def start(self):
         # start the thread to read frames from the video stream
+        self.rawCapture = PiRGBArray(self.camera, size=self.camera.resolution)
+        self.stream = self.camera.capture_continuous(self.rawCapture,
+            format="bgr", use_video_port=True)
+
         Thread(target=self.update, args=()).start()
         time.sleep(1.0)
         return self
@@ -41,6 +42,7 @@ class PiVideoStream:
                 self.stream.close()
                 self.rawCapture.close()
                 self.camera.close()
+                print('closing camera')
                 return
     
     def read(self):
@@ -48,7 +50,6 @@ class PiVideoStream:
         return self.frame
    
     def stop(self):
+        print('closing camera')
         # indicate that the thread should be stopped
         self.stopped = True
-
-vs = PiVideoStream(resolution=(320, 240), framerate=16).start()

@@ -23,11 +23,11 @@ class LiveStreamClient(object):
         self.connection = self.socket_client.makefile('wb')
         return self
 
-    def send(self, frame):
+    def send(self, frame, sensors={}):
         ret, jpeg = cv2.imencode('.jpg', frame)
         data = pickle.dumps(jpeg) ### new code
         self.socket_client.sendall(struct.pack('<L', len(data))+data) ### new code
-        data = pickle.dumps('test-test--test')
+        data = pickle.dumps(sensors)
         self.socket_client.sendall(struct.pack('<L', len(data))+data) ### new code
 
     def read(self):
@@ -37,3 +37,5 @@ class LiveStreamClient(object):
         self.stopped = True
         self.connection.close()
         self.socket_client.close()
+
+ls = LiveStreamClient()

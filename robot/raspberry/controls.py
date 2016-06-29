@@ -64,12 +64,12 @@ class CursesControl(object):
     """docstring for Curses_control"""
     def __init__(self):
         super(CursesControl, self).__init__()
-        self.screen = curses.initscr()
         # self.screen.nodelay()
         self.event = 'unload'
         self.stopped = False
 
     def start(self):
+        self.screen = curses.initscr()
         Thread(target=self.update, args=()).start()
         return self
 
@@ -99,12 +99,15 @@ class CursesControl(object):
             command = 'stop'
         elif self.event == 27: # ESC key
             command = 'quit'
+        elif self.event == ord('p'): # P key
+            command = 'auto_logic_based'
+        elif self.event == ord('o'): # O key
+            command = 'stream'
+        elif self.event == ord('m'): # O key
+            command = 'auto_neural_network'
         else:
             command = '?'
         return command
 
     def stop(self):
         self.stopped = True
-
-ct = CursesControl()
-# ct = RemoteControl().start()
