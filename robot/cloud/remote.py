@@ -9,6 +9,7 @@ import curses
 import time
 from ai import detection, preprocessing
 
+
 class RemoteControlClient(object):
     """docstring for RemoteControlClient"""
     def __init__(self):
@@ -84,7 +85,7 @@ class VisionStreamServer(object):
         self.data = ''
         self.HOST = os.environ.get('LOCAL_IP', 'localhost')
         self.PORT = os.environ.get('CAPTURE_PORT', 8089)
-        
+
     def start(self):
         self.socket_server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         print('Socket created')
@@ -127,12 +128,12 @@ class VisionStreamServer(object):
             msg_size = struct.unpack('<L', packed_msg_size)[0]
             while len(self.data) < msg_size:
                 self.data += self.connection.recv(4096)
-            other_data = self.data[:msg_size]
+            sensors = self.data[:msg_size]
             self.data = self.data[msg_size:]
-            print(pickle.loads(other_data))
+            self.sensors = pickle.loads(sensors)
             
             # self.callback(cv2.imdecode(self.buffer, cv2.CV_LOAD_IMAGE_COLOR))
-            return cv2.imdecode(self.buffer, cv2.CV_LOAD_IMAGE_COLOR)
+            return cv2.imdecode(self.buffer, cv2.CV_LOAD_IMAGE_COLOR), self.sensors
         except socket.error as e:
             print(e)
             self.stop()
@@ -151,7 +152,7 @@ def main():
     time.sleep(2)
     frame_times = []
     while True:
-        frame = vss.read()
+        frame, sensors = vss.read()
         frame_times.append(time.time())
         if len(frame_times) > 10:
             framerate = 10.0/(frame_times[-1] - frame_times[-10])
@@ -161,30 +162,40 @@ def main():
         detected = detection.detections(frame)
         frame = detection.draw_pattern(frame, detected.get('stop', []),  style='roi',  color=(0, 0, 255))
         frame = detection.draw_pattern(frame, detected.get('stop', []), style='line', color=(255, 0, 0))
-        mask = preprocessing.get_mask_color(frame, color='yellow')
-        cx, cy, surface_size = preprocessing.get_mask_info(mask)
+        mask = preprocessing.get_mask_color(frame, color='red')
+        mask_bottom = preprocessing.get_size_mask(mask, 0.5, 1) # get the bottom half
+        cx, cy, surface_size = preprocessing.get_mask_info(mask_bottom)
   
         mask_color = cv2.cvtColor(mask, cv2.cv.CV_GRAY2RGB)
         dst = cv2.add(frame, mask_color)
         
-        cv2.circle(dst, (cx,cy), 10, (0, 0, 255), 3)
+        cv2.circle(dst, (cx, cy + int(mask.shape[0]*0.5)), 10, (0, 0, 255), 3)
 
         cv2.putText(dst,
                     str(framerate)[:3] + 'FPS',
                     (dst.shape[1]-100,dst.shape[0]-30),
                     cv2.FONT_HERSHEY_PLAIN,
                     1,
-                    cv2.cv.CV_RGB(255,255,0),
+                    cv2.cv.CV_RGB(0,0,0),
                     thickness=1)
 
         cv2.putText(dst,
                     'SIZE: ' + str(surface_size),
-                    (100,dst.shape[0]-30),
+                    (10 , dst.shape[0]-30),
                     cv2.FONT_HERSHEY_PLAIN,
                     1,
-                    cv2.cv.CV_RGB(255,255,0),
+                    cv2.cv.CV_RGB(0,0,0),
                     thickness=1)
 
+        for (i, key) in enumerate(sensors):
+          cv2.putText(dst,
+                  str(key)+': ' + str(sensors[key][0]),
+                  (10 , (i+2)*10),
+                  cv2.FONT_HERSHEY_PLAIN,
+                  1,
+                  cv2.cv.CV_RGB(0,0,0),
+                  thickness=1)
+        # dst.resize()
         # dst = cv2.Canny(frame, 50, 150, apertureSize = 3)
         cv2.imshow('Video', dst)
 
