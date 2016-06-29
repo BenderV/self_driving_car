@@ -40,10 +40,27 @@ def get_mask_info(mask):
         cy = int(M['m01']/M['m00'])
         surface_size = M['m00']
     except Exception as e:
-        print(e)
+        print('get_mask_info:', e)
         cx, cy = 0, 0
         surface_size = 0
     return cx, cy, surface_size
+
+
+def get_reward(mask):
+    roi = get_size_mask(mask, 0.8, 1)
+    cx, cy, surface_size = get_mask_info(roi)
+    surface_reward = (surface_size/255)/roi.size
+    distance_from_center_reward = 1 - abs(float(mask.shape[1]/2 - cx)/roi.shape[1])*2
+    reward = surface_reward * distance_from_center_reward * 10
+    return reward
+
+def get_path_points(mask):
+    a = np.linspace(0.5, 1, 11)
+    for i in range(10):
+        roi = get_size_mask(mask, a[i], a[i+1])
+        cx, cy, surface_size = get_mask_info(roi)
+        yield mask.shape[1]/2 - cx
+    
 
 if __name__ == '__main__':
     images_path = glob.glob(sys.argv[1])
@@ -52,10 +69,10 @@ if __name__ == '__main__':
         image = cv2.resize(image, (960, 720))
 
         # roi = mask[int(mask.shape[1]/2):mask.shape[0], 0:mask.shape[1]] # roi
-        #lines = detection.lines_detection(image)
+        # lines = detection.lines_detection(image)
         # detection.draw_pattern(image, lines, style='line', color=(0, 0, 255 ))
 
-        mask = get_mask_color(image, color='yellow')
+        mask = get_mask_color(image, color='red')
         mask_color = cv2.cvtColor(mask, cv2.cv.CV_GRAY2RGB)
 
         a = np.linspace(0.5, 1, 11)
@@ -63,6 +80,9 @@ if __name__ == '__main__':
           roi = get_size_mask(mask, a[i], a[i+1])
           cx, cy, surface_size = get_mask_info(roi)
           cv2.circle(mask_color, (cx, int(image.shape[0]*a[i] + cy)), 10, (0, 0, 255), 3)
+
+        reward = get_reward(mask)
+        print(reward)
 
         img = cv2.add(image, mask_color)
         cv2.imshow('img', img)
