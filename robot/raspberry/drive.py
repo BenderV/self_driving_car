@@ -21,13 +21,6 @@ def timeit_context(name):
     print('[{}] finished in {} ms'.format(name, int(elapsedTime * 1000)))
 
 
-class Driver(object):
-    def __init__(self):
-        super(Driver, self).__init__()
-
-    def foo():
-        pass
-
 class AutonomousDriver(object):
     """docstring for AutonomousDriver"""
     def __init__(self):
@@ -243,9 +236,7 @@ def main():
         control = RemoteControl()
     else:
         control = CursesControl()
-
     
-
     car = Car(control=control)
     car.start()
     while True:
