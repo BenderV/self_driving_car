@@ -1,0 +1,7 @@
+Cython==0.24
+Keras==1.0.4
+RPi.GPIO==0.6.0a3
+numpy==1.8.2
+picamera==1.10
+tensorflow==0.9.0rc0
+unqlite==0.5.3
