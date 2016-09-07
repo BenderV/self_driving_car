@@ -1,7 +1,7 @@
 # Self Driving Car
 
 Mini self-driving car with raspberry pi board.
-Read the report on this project [here](https://olympe.quip.com/oDncAFFJdbRC)!
+Read [the report on this project](https://olympe.quip.com/oDncAFFJdbRC)!
 
 ### Objectives 
 - Lines detections
